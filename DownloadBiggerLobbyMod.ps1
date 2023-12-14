@@ -9,7 +9,7 @@ If (Test-Path -Path "BepInEx")
 Invoke-WebRequest https://github.com/BepInEx/BepInEx/releases/download/v5.4.22/BepInEx_x64_5.4.22.0.zip -O bebin.zip
 Invoke-WebRequest https://thunderstore.io/package/download/2018/LC_API/2.1.1/ -O lc_api.zip 
 Invoke-WebRequest https://thunderstore.io/package/download/bizzlemip/BiggerLobby/2.6.0/ -O biggerlobby.zip
-Invoke-WebRequest https://thunderstore.io/c/lethal-company/p/tinyhoot/ShipLoot/ -O shiploot.zip
+Invoke-WebRequest https://thunderstore.io/package/download/tinyhoot/ShipLoot/1.0.0/ -O shiploot.zip
 
 $bebinHash = Get-FileHash bebin.zip -Algorithm "SHA256"
 $lc_apiHash = Get-FileHash lc_api.zip -Algorithm "SHA256"
