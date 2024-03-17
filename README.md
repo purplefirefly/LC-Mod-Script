@@ -7,13 +7,14 @@ https://thunderstore.io/c/lethal-company/p/bizzlemip/BiggerLobby/
 
 Run this inside your Lethal Company folder to install the Bigger Lobby Mod.
 To run a PowerShell file you must `Right Click -> Run with PowerShell` **double-click will open it in a text editor.**
-If on Windows 11 you may have to run `powershell -ExecutionPolicy ByPass -File DownloadBiggerLobbyMod.ps1` in the game's directory.
 
-Downloads and extracts; (the versions current as of 12-13-2023)
+If on Windows 11 (or have otherwise have a restrictive Execution Policy) you may have to run `powershell -ExecutionPolicy ByPass -File DownloadBiggerLobbyMod.ps1` in the game's directory.
+
+Downloads and extracts; (the versions current as of 03-17-2024)
 ```
 BepInEx_x64_v5.4.22
-LC_API 2.1.1
-BiggerLobby 2.6.0
+LC_API 3.4.5
+BiggerLobby 2.7.0
 ShipLoot 1.0.0
 ```
 
