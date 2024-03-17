@@ -1,5 +1,3 @@
-#Tutorial video: https://www.youtube.com/watch?v=pefi48O-giU
-
 If (Test-Path -Path "BepInEx")
 {
   Remove-Item -Recurse CHANGELOG.md, changelog.txt, doorstop_config.ini, icon.png, manifest.json, README.md, winhttp.dll, BepInEx\
