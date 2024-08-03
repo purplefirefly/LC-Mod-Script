@@ -18,7 +18,7 @@ $shiplootHashComp="3a3937d03e27c467e6d538d9ae90d5cf3cb946a7740d656d7623a01058f60
 
 If (($bebinHash.Hash -eq $bebinHashComp) -and ($morecompanyHash.Hash -eq $morecompanyHashComp) -and ($shiplootHash.Hash -eq $shiplootHashComp))
 {
-  Expand-Archive bebin.zip .
+  Expand-Archive -Force bebin.zip .
   Expand-Archive -Force morecompany.zip .
 
   Expand-Archive -Force shiploot.zip tmp\
