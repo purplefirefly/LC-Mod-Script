@@ -58,7 +58,7 @@ Else
   Write-Error "Hashes don't match!"
 }
 
-Remove-Item -Recurse bebin.zip, morecompany.zip, shiploot.zip, tmp\, DownloadBiggerLobbyMod.ps1
+Remove-Item -Recurse bebin.zip, morecompany.zip, shiploot.zip, tmp\, DownloadFiles.ps1
 
 
 Write-Host "Press any key to continue..."

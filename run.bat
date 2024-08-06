@@ -1,1 +1,1 @@
-Powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& .\DownloadBiggerLobbyMod.ps1"
+Powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& .\DownloadFiles.ps1"
