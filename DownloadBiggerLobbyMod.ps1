@@ -1,6 +1,22 @@
+function OldClean
+{
+  Remove-Item -ErrorAction SilentlyContinue -ErrorVariable RemoveError -Recurse -Path CHANGELOG.md, changelog.txt, doorstop_config.ini, icon.png, manifest.json, README.md, winhttp.dll, .doorstop_version, BepInEx\
+  if ($RemoveError)
+  {
+    # If there was an error and the BepInEx folder still exists, we did not correctly remove the old version.
+    # This could happen in situations where we don't have proper permissions.
+    # Otherwise continue without printing errors for the cases where a file we don't care as much about remained, such as "CHANGELOG.md"
+    If (Test-Path -Path "BepInEx")
+    {
+      # Print the error message and end the script. Ignore errors for "does not exist" as that will match other files and clutter error output.
+      throw "An error occurred: $($RemoveError | Where-Object {$_ -notmatch "because it does not exist"})"
+    }
+  }
+}
+
 If (Test-Path -Path "BepInEx")
 {
-  Remove-Item -Recurse CHANGELOG.md, changelog.txt, doorstop_config.ini, icon.png, manifest.json, README.md, winhttp.dll, .doorstop_version, BepInEx\
+  OldClean
   Write-Host "Old Version Removed"
 }
 
@@ -18,17 +34,28 @@ $shiplootHashComp="3a3937d03e27c467e6d538d9ae90d5cf3cb946a7740d656d7623a01058f60
 
 If (($bebinHash.Hash -eq $bebinHashComp) -and ($morecompanyHash.Hash -eq $morecompanyHashComp) -and ($shiplootHash.Hash -eq $shiplootHashComp))
 {
-  Expand-Archive -Force bebin.zip .
-  Expand-Archive -Force morecompany.zip .
+  $Error.Clear()
+  try
+  {
+    Expand-Archive -Force bebin.zip .
+    Expand-Archive -Force morecompany.zip .
 
-  Expand-Archive -Force shiploot.zip tmp\
-  Move-Item -Path tmp\plugins\ShipLoot\ShipLoot.dll -Destination BepInEx\plugins
-
-  Write-Host "Finished!"
+    Expand-Archive -Force shiploot.zip tmp\
+    Move-Item -Path tmp\plugins\ShipLoot\ShipLoot.dll -Destination BepInEx\plugins
+  }
+  catch
+  {
+    Write-Error $_
+    Write-Warning "Extract not completed, mods may behave strangely!"
+  }
+  if (!$Error)
+  {
+    Write-Host "Extract completed successfully!"
+  }
 }
 Else
 {
-  Write-Host "Error, hashes don't match."
+  Write-Error "Hashes don't match!"
 }
 
 Remove-Item -Recurse bebin.zip, morecompany.zip, shiploot.zip, tmp\, DownloadBiggerLobbyMod.ps1
