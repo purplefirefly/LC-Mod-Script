@@ -6,10 +6,11 @@ A simple PowerShell script to automate installing the MoreCompany Mod for Lethal
 https://thunderstore.io/c/lethal-company/p/notnotnotswipez/MoreCompany/
 
 
-Run this inside your Lethal Company folder to install the Bigger Lobby Mod.
-To run a PowerShell file you must `Right Click -> Run with PowerShell` **double-click will open it in a text editor.**
-
-If on Windows 11 (or have otherwise have a restrictive Execution Policy) you may have to run `powershell -ExecutionPolicy ByPass -File DownloadBiggerLobbyMod.ps1` in the game's directory. For convenience you can press the "Open PowerShell window here" in the drop-down that appears when you `Shift Right-Click` in the Lethal Company folder.
+To install MoreCompany;
+1) Click the green `<> Code` button in the top right of this github page.
+2) Click `Download ZIP`.
+3) Extract the contents to your game folder.
+4) Double click `run.bat`
 
 Downloads and extracts; (the versions current as of 07-30-2024)
 ```
