@@ -1,5 +1,7 @@
+$GameExecutable = "Lethal Company.exe"
+$DestinationDir = "BepInEx"
 $TempDir = ".\tmp"
-New-Item -ItemType Directory -Path $TempDir -ErrorAction SilentlyContinue | Out-Null
+$StartDir = Get-Location
 
 # Class object for each file download.
 class Config
@@ -10,7 +12,39 @@ class Config
   [string]$DestFilePath
 }
 
-# Array of above objects to make iterating over them easier. Import from file.
+function Clean-OldMods
+{
+  Remove-Item -ErrorAction SilentlyContinue -ErrorVariable RemoveError -Recurse -Path CHANGELOG.md, changelog.txt, doorstop_config.ini, icon.png, manifest.json, README.md, winhttp.dll, .doorstop_version, $DestinationDir
+  if ($RemoveError)
+  {
+    # If there was an error and the BepInEx folder still exists, we did not correctly remove the old version.
+    # This could happen in situations where we don't have proper permissions.
+    # Otherwise continue without printing errors for the cases where a file we don't care as much about remained, such as "CHANGELOG.md"
+    If (Test-Path -Path "$DestinationDir")
+    {
+      # Print the error message and end the script. Ignore errors for "does not exist" as that will match other files and clutter error output.
+      throw "An error occurred: $($RemoveError | Where-Object {$_ -notmatch "because it does not exist"})"
+    }
+  }
+}
+
+function Clean-Success
+{
+  # We use $StartDir because the script files may not be relative to the GameDirectory later.
+  Remove-Item -ErrorAction SilentlyContinue -ErrorVariable RemoveError -Recurse -Path $TempDir, $StartDir\DownloadConfig.txt, $StartDir\DestinationConfig.txt,  $StartDir\DownloadFiles.ps1, $StartDir\README.md
+  # Couldn't get this to work: , $StartDir\..\LC-Mod-Script*
+  # We only care about an error if its not a "does not exist" error because the above Remote-Item will not always find a match.
+  if ($RemoveError)
+  {
+    $ErrorsWeCareAbout = $($RemoveError | Where-Object {$_ -notmatch "because it does not exist"})
+    if ($($ErrorsWeCareAbout).Count -gt 0)
+    {
+      throw "An error occurred: $ErrorsWeCareAbout"
+    }
+  }
+}
+
+# === Importing DownloadConfig ===
 # Config file Format: Url, Hash, SrcFilePath, DestFilePath.
 $DownloadConfig = Get-Content -Path "DownloadConfig.txt" | ForEach-Object {
   $fields = $_ -split ',' # Split the line by comma
@@ -23,26 +57,54 @@ $DownloadConfig = Get-Content -Path "DownloadConfig.txt" | ForEach-Object {
   $ItemNumber++
 }
 
-function OldClean
+
+# === Finding the Game directory ===
+$GameDirectory = $null
+
+# Nested breaks in PowerShell https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_break?view=powershell-7.4#using-break-in-loops
+:GameDirectoryLoop foreach ($IterateDirectory in Get-Content -Path "DestinationConfig.txt")
 {
-  Remove-Item -ErrorAction SilentlyContinue -ErrorVariable RemoveError -Recurse -Path CHANGELOG.md, changelog.txt, doorstop_config.ini, icon.png, manifest.json, README.md, winhttp.dll, .doorstop_version, BepInEx\
-  if ($RemoveError)
+  # If the first character in a directory is *, we're treating that as wanting to iterate over drive letters.
+  # For instances where we are not iterating over drive letters, the later foreach statement is pointless as there will only be one object.
+  if ($IterateDirectory[0] -eq "*")
   {
-    # If there was an error and the BepInEx folder still exists, we did not correctly remove the old version.
-    # This could happen in situations where we don't have proper permissions.
-    # Otherwise continue without printing errors for the cases where a file we don't care as much about remained, such as "CHANGELOG.md"
-    If (Test-Path -Path "BepInEx")
+    $MountedDrives = (Get-PSDrive -PSProvider FileSystem).Root # Gets array of mounted drive letters ex: "C:/ D:/ E:/"
+    $NewIterateDirectory = $IterateDirectory.TrimStart("*/") # Removes starting */ ex: "*/SteamLibrary/steamapps -> SteamLibrary/steamapps"
+    $IterateDirectory = @() # Empties array
+    foreach ($Drive in $MountedDrives)
     {
-      # Print the error message and end the script. Ignore errors for "does not exist" as that will match other files and clutter error output.
-      throw "An error occurred: $($RemoveError | Where-Object {$_ -notmatch "because it does not exist"})"
+      $IterateDirectory += ($Drive + $NewIterateDirectory) # Combines. ex: "D:/SteamLibrary/steamapps E:/SteamLibrary/steamapps"
+    }
+  }
+
+  foreach ($IterateSubDir in $IterateDirectory)
+  {
+    Write-Output "Checking $IterateSubDir/$GameExecutable"
+    if (Test-Path -Path "$IterateSubDir/$GameExecutable")
+    {
+      $GameDirectory = $IterateSubDir
+      Write-Output "Game Directory is $GameDirectory"
+      break GameDirectoryLoop
     }
   }
 }
 
-# Remove old mod files.
-If (Test-Path -Path "BepInEx")
+if ($GameDirectory -eq $null)
 {
-  OldClean
+  throw "Cannot find game directory! Try running the script again inside the game's directory."
+}
+
+
+
+Set-Location -Path $GameDirectory
+
+# === Start making changes ===
+New-Item -ItemType Directory -Path $TempDir -ErrorAction SilentlyContinue | Out-Null
+
+# Remove old mod files.
+If (Test-Path -Path "$DestinationDir")
+{
+  Clean-OldMods
   Write-Host "Old Version Removed"
 }
 
@@ -112,8 +174,5 @@ Else
   Write-Error "Hashes don't match!"
 }
 
-Remove-Item -Recurse -Path $TempDir, DownloadConfig.txt, DownloadFiles.ps1, run.bat
-
-
-Write-Host "Press any key to continue..."
-$Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+Clean-Success
+Pause

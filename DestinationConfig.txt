@@ -1,0 +1,4 @@
+.
+..
+C:/Program Files (x86)/Steam/steamapps/common/Lethal Company
+*/SteamLibrary/steamapps/common/Lethal Company

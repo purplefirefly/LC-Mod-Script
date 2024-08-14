@@ -9,8 +9,8 @@ https://thunderstore.io/c/lethal-company/p/notnotnotswipez/MoreCompany/
 To install MoreCompany;
 1) Click the green `<> Code` button in the top right of this github page.
 2) Click `Download ZIP`.
-3) Extract the contents to your game folder.
-4) Double click `run.bat`
+3) Extract.
+4) Double click `run.bat`.
 
 Downloads and extracts; (the versions current as of 07-30-2024)
 ```
