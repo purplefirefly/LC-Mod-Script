@@ -1,3 +1,3 @@
 https://github.com/BepInEx/BepInEx/releases/download/v5.4.23.2/BepInEx_win_x64_5.4.23.2.zip,f752ce4e838f4c305b9da1404b6745f2cff23b8bfd494f79f0c84d0a01f59b46,*,
-https://thunderstore.io/package/download/notnotnotswipez/MoreCompany/1.9.4/,1cae988f9b3562fda930fafd7b04984253591800095a542e1396905366da5866,BepInEx\plugins\MoreCompany.dll,BepInEx\plugins\MoreCompany.dll
+https://thunderstore.io/package/download/notnotnotswipez/MoreCompany/1.10.1/,d4166d108ae406a66eb896a3636d410a1a10d7dd83b92658ef3455ba286059d5,BepInEx\plugins\MoreCompany.dll,BepInEx\plugins\MoreCompany.dll
 https://thunderstore.io/package/download/tinyhoot/ShipLoot/1.1.0/,3a3937d03e27c467e6d538d9ae90d5cf3cb946a7740d656d7623a01058f602c3,plugins\ShipLoot\ShipLoot.dll,BepInEx\plugins\ShipLoot.dll
