@@ -12,7 +12,7 @@ To install MoreCompany;
 3) Extract.
 4) Double click `run.bat`.
 
-Downloads and extracts; (the versions current as of 08-24-2024)
+Downloads and extracts; (the versions current as of 10-26-2024)
 ```
 BepInEx 5.4.23.2
 MoreCompany 1.10.2
