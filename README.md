@@ -1,7 +1,7 @@
 # LC-Mod-Script
 Lethal Company Mod Install Script
 
-A simple PowerShell script to automate installing the MoreCompany Mod for Lethal Company v65.
+A simple PowerShell script to automate installing the MoreCompany Mod for Lethal Company v69.
 (Previously was BiggerLobby)
 https://thunderstore.io/c/lethal-company/p/notnotnotswipez/MoreCompany/
 
@@ -12,10 +12,10 @@ To install MoreCompany;
 3) Extract.
 4) Double click `run.bat`.
 
-Downloads and extracts; (the versions current as of 10-26-2024)
+Downloads and extracts; (the versions current as of 2-3-2025)
 ```
 BepInEx 5.4.23.2
-MoreCompany 1.10.2
+MoreCompany 1.11.0
 ShipLoot 1.1.0
 ```
 
